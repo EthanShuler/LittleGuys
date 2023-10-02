@@ -19,6 +19,9 @@
   },
   "dependencies": {
     "@mantine/core": "7.1.0",
+    "@mantine/dates": "^7.1.0",
+    "@mantine/dropzone": "^7.1.0",
+    "@mantine/form": "^7.1.0",
     "@mantine/hooks": "7.1.0",
     "@next/bundle-analyzer": "^13.5.3",
     "@tabler/icons-react": "^2.20.0",
