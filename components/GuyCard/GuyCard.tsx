@@ -1,10 +1,10 @@
 import { Card, Image, Text, AspectRatio } from '@mantine/core';
-import NextImage from 'next/image';
+import NextImage, { StaticImageData } from 'next/image';
 import classes from './GuyCard.module.css';
 
 interface LittleGuy {
   name: string;
-  image: string;
+  image: StaticImageData;
 }
 
 export function GuyCard(props:LittleGuy) {
