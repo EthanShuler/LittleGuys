@@ -1,0 +1,8 @@
+.leftColumn {
+  background-color: var(--mantine-color-gray-6);
+  height: 100%;
+}
+
+.border {
+  border: 1px solid blue;
+}

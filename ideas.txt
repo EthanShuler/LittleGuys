@@ -1,0 +1,36 @@
+LittleGuy:
+name
+description
+
+Attributes:
+- Custom
+- strength
+- weakness
+- birthday
+
+- hobby?
+- favorite book/movie?
+
+geneaology
+
+---------------------------
+
+Peepy:
+name
+description
+
+Attributes:
+- strength
+- wisdom
+- psychic
+- weakness
+- birthday
+
+------------------------------
+
+Smiski:
+- Body type
+- pose
+- found
+
+Description
