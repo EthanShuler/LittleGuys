@@ -1,4 +1,5 @@
-import { Card, Image, Text, AspectRatio } from '@mantine/core';
+import { Card, Image, Text, AspectRatio, Group } from '@mantine/core';
+import { IconUserCircle } from '@tabler/icons-react';
 import NextImage, { StaticImageData } from 'next/image';
 import classes from './GuyCard.module.css';
 
@@ -25,9 +26,12 @@ export function GuyCard(props:LittleGuy) {
           // fit="contain"
         />
       </AspectRatio>
-      <Text className={classes.title} mt={5}>
-        {props.name}
-      </Text>
+      <Group justify="space-between">
+        <IconUserCircle />
+        <Text className={classes.title} mt={5}>
+          {props.name}
+        </Text>
+      </Group>
     </Card>
   );
 }

@@ -39,7 +39,7 @@ const dummyData = [
 
 export default function HomePage() {
   return (
-    <Container py="l">
+    <Container py="xl">
       <SimpleGrid cols={{ base: 1, sm: 3 }}>
         {dummyData.map(guy => (
           <GuyCard key={guy.id} name={guy.name} image={guy.image} />
