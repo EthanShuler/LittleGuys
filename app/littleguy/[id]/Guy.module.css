@@ -3,6 +3,10 @@
   height: 100%;
 }
 
-.border {
-  border: 1px solid blue;
+.description {
+  height: 50%;
+}
+
+.comments {
+  height: 50%;
 }

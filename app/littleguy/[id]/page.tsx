@@ -1,8 +1,9 @@
-import { SimpleGrid, Image, Text, Title, Grid, GridCol, Divider, Stack } from '@mantine/core';
+import { SimpleGrid, Image, Text, Title, Grid, GridCol, Container, Stack, Paper, Input } from '@mantine/core';
 import NextImage from 'next/image';
 import { IconUserCircle } from '@tabler/icons-react';
 import classes from './Guy.module.css';
 import myImage from './myImage.png';
+import { Comment } from '@/components/Comment/Comment';
 
 const dummyData = {
   image: myImage,
@@ -28,6 +29,33 @@ const stats = [
   },
 ];
 
+const comments = [
+  {
+    id: 0,
+    name: 'Bobby J',
+    image: 'https://images.unsplash.com/photo-1624298357597-fd92dfbec01d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=250&q=80',
+    comment: 'lskdjflj ljasldkf jlkjfl ksjdlksjd lskdj lksdlksdlf',
+  },
+  {
+    id: 1,
+    name: 'Bobby J',
+    image: 'https://images.unsplash.com/photo-1624298357597-fd92dfbec01d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=250&q=80',
+    comment: 'lskdjflj ljasldkf jlkjfl ksjdlksjd lskdj lksdlksdlf',
+  },
+  {
+    id: 2,
+    name: 'Bobby J',
+    image: 'https://images.unsplash.com/photo-1624298357597-fd92dfbec01d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=250&q=80',
+    comment: 'lskdjflj ljasldkf jlkjfl ksjdlksjd lskdj lksdlksdlf',
+  },
+  {
+    id: 3,
+    name: 'Bobby J',
+    image: 'https://images.unsplash.com/photo-1624298357597-fd92dfbec01d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=250&q=80',
+    comment: 'lskdjflj ljasldkf jlkjfl ksjdlksjd lskdj lksdlksdlf',
+  },
+];
+
 interface StatisticProps {
   title: string;
   description: string;
@@ -45,12 +73,12 @@ const Statistic = ({ title, description }: StatisticProps) => (
 );
 
 const Description = () => (
-  <>
+  <div className={classes.description}>
     <Title order={1} mb={20}>{dummyData.name}</Title>
-    { stats.map(stat => (
+    {stats.map(stat => (
       <Statistic key={stat.id} title={stat.title} description={stat.description} />
     ))}
-  </>
+  </div>
 );
 
 const ImageContainer = () => (
@@ -73,6 +101,24 @@ const ImageContainer = () => (
 
 );
 
+const CommentContainer = () => (
+  <Paper shadow="md" radius="md" withBorder p="sm" mx="sm">
+    <Input placeholder="Comment" />
+    <Container className={classes.comments} mt="sm">
+      <Stack>
+        {comments.map(comment => (
+          <Comment
+            key={comment.id}
+            name={comment.name}
+            image={comment.image}
+            comment={comment.comment}
+          />
+        ))}
+      </Stack>
+    </Container>
+  </Paper>
+);
+
 export default function Guy() {
   return (
     <>
@@ -83,7 +129,7 @@ export default function Guy() {
         <div>
           <Stack justify="space-between" h="100%">
             <Description />
-            <Description />
+            <CommentContainer />
           </Stack>
         </div>
       </SimpleGrid>
