@@ -1,5 +1,3 @@
-'use client';
-
 import { Container, SimpleGrid } from '@mantine/core';
 import myImage from './myImage.png';
 import { GuyCard } from '@/components/GuyCard/GuyCard';
