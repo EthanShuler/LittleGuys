@@ -23,11 +23,12 @@ export default function RootLayout({ children }: { children: any }) {
         <MantineProvider theme={theme}>
           <AppShell
             header={{ height: 60 }}
+            h="100%"
           >
             <AppShellHeader>
               <Header />
             </AppShellHeader>
-            <AppShellMain>
+            <AppShellMain h="100%">
               { children }
             </AppShellMain>
           </AppShell>

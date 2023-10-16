@@ -1,4 +1,4 @@
-import { SimpleGrid, Image, Text, Title, Grid, GridCol, Divider } from '@mantine/core';
+import { SimpleGrid, Image, Text, Title, Grid, GridCol, Divider, Stack } from '@mantine/core';
 import NextImage from 'next/image';
 import { IconUserCircle } from '@tabler/icons-react';
 import classes from './Guy.module.css';
@@ -81,11 +81,10 @@ export default function Guy() {
           <ImageContainer />
         </div>
         <div>
-          <SimpleGrid cols={1}>
+          <Stack justify="space-between" h="100%">
             <Description />
-            <Divider />
             <Description />
-          </SimpleGrid>
+          </Stack>
         </div>
       </SimpleGrid>
     </>
