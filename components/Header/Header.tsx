@@ -1,5 +1,8 @@
 'use client';
 
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import {
   Autocomplete,
   Group,
@@ -22,6 +25,14 @@ const links = [
 ];
 
 export function Header() {
+  const router = useRouter();
+  const supabase = createClientComponentClient();
+
+  const handleLogout = async () => {
+    supabase.auth.signOut();
+    router.refresh();
+  };
+
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const items = links.map((link) => (
     <a
@@ -39,7 +50,7 @@ export function Header() {
         <Group justify="space-between" h="100%">
 
           <Group h="100%" gap={10} visibleFrom="sm">
-            { items }
+            {items}
             <Autocomplete
               className={classes.search}
               placeholder="Search"
@@ -50,8 +61,8 @@ export function Header() {
           </Group>
 
           <Group visibleFrom="sm">
-            <Button variant="default">Log in</Button>
-            <Button>Sign up</Button>
+            <Button variant="default" component={Link} href="/auth">Log in</Button>
+            <Button onClick={handleLogout}>Log out</Button>
           </Group>
 
           <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
@@ -69,7 +80,7 @@ export function Header() {
       >
         <ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">
           <Divider my="sm" />
-            { items }
+          {items}
           <Autocomplete
             className={classes.search}
             placeholder="Search"

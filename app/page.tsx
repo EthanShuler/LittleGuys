@@ -1,6 +1,9 @@
 import { Container, SimpleGrid } from '@mantine/core';
-import myImage from './myImage.png';
+// import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+// import { cookies } from 'next/headers';
+// import { redirect } from 'next/navigation';
 import { GuyCard } from '@/components/GuyCard/GuyCard';
+import myImage from './myImage.png';
 
 const dummyData = [
   {
@@ -35,7 +38,13 @@ const dummyData = [
   },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  // const supabase = createServerComponentClient({ cookies });
+  // const { data } = await supabase.auth.getSession();
+  // if (!data.session) {
+  //   return redirect('/auth');
+  // }
+
   return (
     <Container py="xl">
       <SimpleGrid cols={{ base: 1, sm: 3 }}>
