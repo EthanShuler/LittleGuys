@@ -1,7 +1,8 @@
 import '@mantine/core/styles.css';
 import React from 'react';
 import { MantineProvider, ColorSchemeScript, AppShell, AppShellHeader, AppShellMain } from '@mantine/core';
-import { Header } from '@/components/Header/Header';
+import { createServerSupabaseClient } from '@/supabase';
+import Header from '@/components/Header/Header';
 import { theme } from '../theme';
 
 export const metadata = {
@@ -9,7 +10,10 @@ export const metadata = {
   description: 'Who are the little guys hangin around?',
 };
 
-export default function RootLayout({ children }: { children: any }) {
+export default async function RootLayout({ children }: { children: any }) {
+  const supabase = createServerSupabaseClient();
+  const { data: { session } } = await supabase.auth.getSession();
+
   return (
     <html lang="en">
       <head>
@@ -26,7 +30,7 @@ export default function RootLayout({ children }: { children: any }) {
             h="100%"
           >
             <AppShellHeader>
-              <Header />
+              <Header session={session} />
             </AppShellHeader>
             <AppShellMain h="100%">
               { children }

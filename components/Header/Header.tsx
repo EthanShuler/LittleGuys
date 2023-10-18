@@ -1,6 +1,6 @@
 'use client';
 
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { Session, createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
@@ -18,18 +18,20 @@ import { useDisclosure } from '@mantine/hooks';
 import { IconSearch } from '@tabler/icons-react';
 import classes from './Header.module.css';
 
+import type { Database } from '@/lib/database.types';
+
 const links = [
   { link: '/', label: 'The Guys' },
   { link: '/create', label: 'Add Your Little Guy' },
   { link: '/learn', label: 'Learn' },
 ];
 
-export function Header() {
+export default function Header({ session }: { session: Session | null }) {
   const router = useRouter();
-  const supabase = createClientComponentClient();
+  const supabase = createClientComponentClient<Database>();
 
   const handleLogout = async () => {
-    supabase.auth.signOut();
+    await supabase.auth.signOut();
     router.refresh();
   };
 
@@ -61,8 +63,9 @@ export function Header() {
           </Group>
 
           <Group visibleFrom="sm">
-            <Button variant="default" component={Link} href="/auth">Log in</Button>
-            <Button onClick={handleLogout}>Log out</Button>
+            { session
+            ? <Button onClick={handleLogout}>Log out {session.user.email}</Button>
+            : <Button variant="default" component={Link} href="/auth">Log in</Button> }
           </Group>
 
           <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />

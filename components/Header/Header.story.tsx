@@ -1,7 +1,7 @@
-import { Header } from './Header';
+import Header from './Header';
 
 export default {
   title: 'Header',
 };
 
-export const Default = () => <Header />;
+export const Default = () => <Header session={null} />;
