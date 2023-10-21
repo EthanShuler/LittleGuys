@@ -1,15 +1,10 @@
 import { SimpleGrid, Image, Text, Title, Grid, GridCol, Container, Stack, Paper, Input } from '@mantine/core';
-import NextImage from 'next/image';
+import NextImage, { StaticImageData } from 'next/image';
 import { IconUserCircle } from '@tabler/icons-react';
+import { createServerSupabaseClient } from '@/supabase';
 import classes from './Guy.module.css';
 import myImage from './myImage.png';
 import { Comment } from '@/components/Comment/Comment';
-
-const dummyData = {
-  image: myImage,
-  name: 'Brim Kimble',
-  description: 'lorem impsum and allsldjfla lkjdlkfj sldjflsajdffls jlkjslfjsalkjflsjd flsajlf slfj laskdj laskjd lasdl kl ',
-};
 
 const stats = [
   {
@@ -58,7 +53,7 @@ const comments = [
 
 interface StatisticProps {
   title: string;
-  description: string;
+  description: string | null;
 }
 
 const Statistic = ({ title, description }: StatisticProps) => (
@@ -72,16 +67,25 @@ const Statistic = ({ title, description }: StatisticProps) => (
   </Grid>
 );
 
-const Description = () => (
+interface DescriptionProps {
+  id: number;
+  name: string;
+  description: string | null;
+}
+
+const Description = (littleguy: DescriptionProps) => (
   <div className={classes.description}>
-    <Title order={1} mb={20}>{dummyData.name}</Title>
-    {stats.map(stat => (
-      <Statistic key={stat.id} title={stat.title} description={stat.description} />
-    ))}
+    <Title order={1} mb={20}>{littleguy.name}</Title>
+    <Statistic key={littleguy.id} title="abc" description={littleguy.description} />
   </div>
 );
 
-const ImageContainer = () => (
+interface ImageContainerProps {
+  image: StaticImageData;
+  alt: string;
+}
+
+const ImageContainer = ({ image, alt }: ImageContainerProps) => (
   <>
     <Grid align="center">
       <GridCol span={2}>
@@ -93,12 +97,11 @@ const ImageContainer = () => (
     </Grid>
     <Image
       component={NextImage}
-      src={dummyData.image}
+      src={image}
       fit="contain"
-      alt="My image"
+      alt={alt}
     />
   </>
-
 );
 
 const CommentContainer = () => (
@@ -119,20 +122,25 @@ const CommentContainer = () => (
   </Paper>
 );
 
-export default function Guy() {
-  return (
+export default async function Page({ params }: { params: { id: number } }) {
+  const { id } = params;
+  const supabase = createServerSupabaseClient();
+  const { data, error } = await supabase.from('littleguy').select('*').eq('id', id);
+  console.log(data);
+
+  return data ? (
     <>
       <SimpleGrid cols={{ base: 1, md: 2 }} h="100%">
         <div className={classes.leftColumn}>
-          <ImageContainer />
+          <ImageContainer image={myImage} alt={data[0].name} />
         </div>
         <div>
           <Stack justify="space-between" h="100%">
-            <Description />
+            <Description id={data[0].id} name={data[0].name} description={data[0].description} />
             <CommentContainer />
           </Stack>
         </div>
       </SimpleGrid>
     </>
-  );
+  ) : <></>;
 }

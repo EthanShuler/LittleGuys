@@ -11,7 +11,7 @@ export default async function HomePage() {
     <Container py="xl">
       <SimpleGrid cols={{ base: 1, sm: 3 }}>
         {data?.map(guy => (
-          <GuyCard key={guy.id} name={guy.name} image={myImage} />
+          <GuyCard key={guy.id} name={guy.name} image={myImage} id={guy.id} />
         ))}
       </SimpleGrid>
     </Container>

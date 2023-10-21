@@ -5,15 +5,17 @@ import classes from './GuyCard.module.css';
 interface LittleGuy {
   name: string;
   image: StaticImageData;
+  id: number;
 }
 
-export function GuyCard({ name, image }:LittleGuy) {
+export function GuyCard({ name, image, id }:LittleGuy) {
+  const url = `/littleguy/${id}`;
   return (
     <Card
       p="md"
       radius="md"
       component="a"
-      href="/littleguy/1"
+      href={url}
       withBorder
       className={classes.card}
     >
