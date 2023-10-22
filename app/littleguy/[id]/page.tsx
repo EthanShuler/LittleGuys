@@ -6,23 +6,7 @@ import classes from './Guy.module.css';
 import myImage from './myImage.png';
 import { Comment } from '@/components/Comment/Comment';
 
-const stats = [
-  {
-    id: 0,
-    title: 'Statiscitc 1',
-    description: 'klasdjfl asjljlk jsdljlaskjl ksja lkjsaklj lswkaj floisajdfl j ljf jsald fkj ',
-  },
-  {
-    id: 1,
-    title: 'Statiscitc 1',
-    description: 'klasdjfl asjljlk jsdljlaskjl ksja lkjsaklj lswkaj floisajdfl j ljf jsald fkj ',
-  },
-  {
-    id: 2,
-    title: 'Statiscitc 1',
-    description: 'klasdjfl asjljlk jsdljlaskjl ksja lkjsaklj lswkaj floisajdfl j ljf jsald fkj ',
-  },
-];
+import type { Tables } from '@/lib/database.types';
 
 const comments = [
   {
@@ -68,15 +52,26 @@ const Statistic = ({ title, description }: StatisticProps) => (
 );
 
 interface DescriptionProps {
-  id: number;
-  name: string;
-  description: string | null;
+  littleGuy: Tables<'littleguy'>;
+  customFields: Tables<'custom_field'>[] | null;
 }
 
-const Description = (littleguy: DescriptionProps) => (
+const Description = ({ littleGuy, customFields }: DescriptionProps) => (
   <div className={classes.description}>
-    <Title order={1} mb={20}>{littleguy.name}</Title>
-    <Statistic key={littleguy.id} title="abc" description={littleguy.description} />
+    <Title order={1} mb={20}>{littleGuy.name}</Title>
+    <Statistic key={littleGuy.id} title="Description" description={littleGuy.description} />
+    <Statistic key={littleGuy.id} title="Strength" description={littleGuy.description} />
+    <Statistic key={littleGuy.id} title="Weakness" description={littleGuy.description} />
+    <Statistic key={littleGuy.id} title="Pose" description={littleGuy.description} />
+    <Statistic key={littleGuy.id} title="Found" description={littleGuy.description} />
+
+    {customFields?.map(customField => (
+      <Statistic
+        key={customField.id}
+        title={customField.name}
+        description={customField.value}
+      />
+    ))}
   </div>
 );
 
@@ -105,7 +100,7 @@ const ImageContainer = ({ image, alt }: ImageContainerProps) => (
 );
 
 const CommentContainer = () => (
-  <Paper shadow="md" radius="md" withBorder p="sm" mx="sm">
+  <Paper shadow="md" radius="md" withBorder p="sm" mx="lg" mb="xl">
     <Input placeholder="Comment" />
     <Container className={classes.comments} mt="sm">
       <Stack>
@@ -126,21 +121,25 @@ export default async function Page({ params }: { params: { id: number } }) {
   const { id } = params;
   const supabase = createServerSupabaseClient();
   const { data, error } = await supabase.from('littleguy').select('*').eq('id', id);
-  console.log(data);
+  if (error) {
+    return <></>;
+  }
+  const guy = data[0];
+  const { data: customFields } = await supabase.from('custom_field').select('*').eq('littleguy_id', guy.id);
 
-  return data ? (
+  return (
     <>
       <SimpleGrid cols={{ base: 1, md: 2 }} h="100%">
         <div className={classes.leftColumn}>
-          <ImageContainer image={myImage} alt={data[0].name} />
+          <ImageContainer image={myImage} alt={guy.name} />
         </div>
         <div>
           <Stack justify="space-between" h="100%">
-            <Description id={data[0].id} name={data[0].name} description={data[0].description} />
+            <Description littleGuy={guy} customFields={customFields} />
             <CommentContainer />
           </Stack>
         </div>
       </SimpleGrid>
     </>
-  ) : <></>;
+  );
 }

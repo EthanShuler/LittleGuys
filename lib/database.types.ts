@@ -1,5 +1,8 @@
 /* eslint-disable @typescript-eslint/semi */
 /* eslint-disable @typescript-eslint/quotes */
+export type Tables<T extends keyof Database['public']['Tables']> = Database['public']['Tables'][T]['Row']
+export type Enums<T extends keyof Database['public']['Enums']> = Database['public']['Enums'][T]
+
 export type Json =
   | string
   | number
@@ -11,10 +14,40 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      custom_field: {
+        Row: {
+          created_at: string
+          id: number
+          littleguy_id: number
+          name: string
+          value: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          littleguy_id: number
+          name: string
+          value?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          littleguy_id?: number
+          name?: string
+          value?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "custom_field_littleguy_id_fkey"
+            columns: ["littleguy_id"]
+            referencedRelation: "littleguy"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       littleguy: {
         Row: {
           created_at: string
-          custom: Json | null
           description: string | null
           found: string | null
           id: number
@@ -26,7 +59,6 @@ export interface Database {
         }
         Insert: {
           created_at?: string
-          custom?: Json | null
           description?: string | null
           found?: string | null
           id?: number
@@ -38,7 +70,6 @@ export interface Database {
         }
         Update: {
           created_at?: string
-          custom?: Json | null
           description?: string | null
           found?: string | null
           id?: number
