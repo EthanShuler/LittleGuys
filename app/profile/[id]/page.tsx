@@ -1,4 +1,4 @@
-import { Container, SimpleGrid, Grid, GridCol } from '@mantine/core';
+import { Container, SimpleGrid, Grid, GridCol, Avatar, Stack, Title } from '@mantine/core';
 import { GuyCard } from '@/components/GuyCard/GuyCard';
 import { createServerSupabaseClient } from '@/supabase';
 
@@ -12,7 +12,7 @@ const UserGuys = ({ littleGuys }: UserGuysProps) => (
     <Container>
       <SimpleGrid cols={{ base: 1, sm: 3 }}>
         {littleGuys?.map(guy => (
-          <GuyCard key={guy.id} littleGuy={guy} />
+          <GuyCard key={guy.id} id={guy.id} name={guy.name} userId={null} userAvatar={null} />
         ))}
       </SimpleGrid>
     </Container>
@@ -26,12 +26,21 @@ export default async function Page({ params }: { params: { id: string } }) {
     return <></>;
   }
   const account = data[0];
-  const { data: littleguys } = await supabase.from('littleguy').select('*').eq('owner', account.id);
+  const { data: littleguys } = await supabase.from('littleguy').select('*').eq('user_id', account.id);
 
   return (
     <Grid>
-      <GridCol span={3}>
-        <h1>hi</h1>
+      <GridCol span={3} bg="blue">
+        <Container>
+          <Stack>
+            <Avatar
+              src={account.avatar_url}
+              alt="avatar"
+              radius="xl"
+            />
+            <Title>{account.full_name}</Title>
+          </Stack>
+        </Container>
       </GridCol>
       <GridCol span={9}>
         <UserGuys littleGuys={littleguys} />

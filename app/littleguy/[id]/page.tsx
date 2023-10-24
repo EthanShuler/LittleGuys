@@ -1,6 +1,5 @@
-import { SimpleGrid, Image, Text, Title, Grid, GridCol, Container, Stack, Paper, Input } from '@mantine/core';
-import NextImage, { StaticImageData } from 'next/image';
-import { IconUserCircle } from '@tabler/icons-react';
+import { SimpleGrid, Image, Text, Title, Grid, GridCol, Container, Stack, Paper, Input, Avatar } from '@mantine/core';
+import NextImage from 'next/image';
 import { createServerSupabaseClient } from '@/supabase';
 import classes from './Guy.module.css';
 import myImage from './myImage.png';
@@ -76,25 +75,33 @@ const Description = ({ littleGuy, customFields }: DescriptionProps) => (
 );
 
 interface ImageContainerProps {
-  image: StaticImageData;
-  alt: string;
+  profile: Tables<'profile'>;
 }
 
-const ImageContainer = ({ image, alt }: ImageContainerProps) => (
+const ImageContainer = ({ profile }: ImageContainerProps) => (
   <>
-    <Grid align="center">
+    <Grid align="center" mt="lg">
       <GridCol span={2}>
-        <IconUserCircle width="6rem" height="6rem" stroke={1.5} />
+        <Avatar
+          ml="xl"
+          src={profile.avatar_url}
+          alt="name"
+          radius="xl"
+          component="a"
+          href={`/profile/${profile.id}`}
+        />
       </GridCol>
       <GridCol span={10}>
-        <Title order={1}>NAME</Title>
+        <Title order={2}>{profile.full_name}</Title>
       </GridCol>
     </Grid>
     <Image
+      mt="lg"
       component={NextImage}
-      src={image}
+      src={myImage}
       fit="contain"
-      alt={alt}
+      alt="abc"
+      h="50%"
     />
   </>
 );
@@ -120,7 +127,7 @@ const CommentContainer = () => (
 export default async function Page({ params }: { params: { id: number } }) {
   const { id } = params;
   const supabase = createServerSupabaseClient();
-  const { data, error } = await supabase.from('littleguy').select('*').eq('id', id);
+  const { data, error } = await supabase.from('littleguy').select('*, profile(*)').eq('id', id);
   if (error) {
     return <></>;
   }
@@ -131,7 +138,7 @@ export default async function Page({ params }: { params: { id: number } }) {
     <>
       <SimpleGrid cols={{ base: 1, md: 2 }} h="100%">
         <div className={classes.leftColumn}>
-          <ImageContainer image={myImage} alt={guy.name} />
+          { data[0].profile ? <ImageContainer profile={data[0].profile} /> : <></> }
         </div>
         <div>
           <Stack justify="space-between" h="100%">

@@ -4,7 +4,7 @@ import { GuyCard } from '@/components/GuyCard/GuyCard';
 
 export default async function HomePage() {
   const supabase = createServerSupabaseClient();
-  const { data, error } = await supabase.from('littleguy').select('*');
+  const { data, error } = await supabase.from('littleguy').select('*, profile(*)');
 
   if (error) {
     return <></>;
@@ -13,9 +13,17 @@ export default async function HomePage() {
   return (
     <Container py="xl">
       <SimpleGrid cols={{ base: 1, sm: 3 }}>
-        {data.map(guy => (
-          <GuyCard key={guy.id} littleGuy={guy} />
-        ))}
+        {data.map(guy => guy.profile ? (
+          <GuyCard
+            key={guy.id}
+            id={guy.id}
+            name={guy.name}
+            userId={guy.profile?.id}
+            userAvatar={guy.profile?.avatar_url}
+          />
+        )
+          : <></>
+        )}
       </SimpleGrid>
     </Container>
   );

@@ -1,42 +1,47 @@
-import { Card, Image, Text, AspectRatio, Group, Avatar } from '@mantine/core';
+import { Card, Image, Text, AspectRatio, Group, Avatar, Box } from '@mantine/core';
 import NextImage from 'next/image';
 import classes from './GuyCard.module.css';
 import image from './myImage.png';
-import type { Tables } from '@/lib/database.types';
 
 interface GuyCardProps {
-  littleGuy: Tables<'littleguy'>;
+  id: number;
+  name: string;
+  userId: string | null;
+  userAvatar: string | null;
 }
 
-export function GuyCard({ littleGuy }: GuyCardProps) {
-  const guyUrl = `/littleguy/${littleGuy.id}`;
-  const profileUrl = `/profile/${littleGuy.owner}`;
+export function GuyCard({ id, name, userId, userAvatar }: GuyCardProps) {
+  const guyUrl = `/littleguy/${id}`;
+  const profileUrl = `/profile/${userId}`;
   return (
     <Card
       p="md"
       radius="md"
-      component="a"
-      href={guyUrl}
       withBorder
       className={classes.card}
     >
-      <AspectRatio ratio={1920 / 1080}>
-        <Image
-          component={NextImage}
-          src={image}
-          alt="My image"
-          // fit="contain"
-        />
-      </AspectRatio>
+      <Box component="a" href={guyUrl}>
+        <AspectRatio ratio={1920 / 1080}>
+          <Image
+            component={NextImage}
+            src={image}
+            alt="My image"
+            // fit="contain"
+          />
+        </AspectRatio>
+      </Box>
       <Group justify="space-between">
-      <Avatar
-        alt="name"
-        radius="xl"
-        component="a"
-        href={profileUrl}
-      />
+        { userAvatar ?
+        <Avatar
+          src={userAvatar}
+          alt="name"
+          radius="xl"
+          component="a"
+          href={profileUrl}
+        />
+        : <></> }
         <Text className={classes.title} mt={5}>
-          {littleGuy.name}
+          {name}
         </Text>
       </Group>
     </Card>

@@ -52,9 +52,9 @@ export interface Database {
           found: string | null
           id: number
           name: string
-          owner: string
           pose: string | null
           strength: string | null
+          user_id: string
           weakness: string | null
         }
         Insert: {
@@ -63,9 +63,9 @@ export interface Database {
           found?: string | null
           id?: number
           name?: string
-          owner?: string
           pose?: string | null
           strength?: string | null
+          user_id?: string
           weakness?: string | null
         }
         Update: {
@@ -74,15 +74,15 @@ export interface Database {
           found?: string | null
           id?: number
           name?: string
-          owner?: string
           pose?: string | null
           strength?: string | null
+          user_id?: string
           weakness?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "littleguy_owner_fkey"
-            columns: ["owner"]
+            foreignKeyName: "littleguy_user_id_fkey"
+            columns: ["user_id"]
             referencedRelation: "profile"
             referencedColumns: ["id"]
           }

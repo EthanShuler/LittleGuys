@@ -15,7 +15,8 @@
     "prettier:write": "prettier --write \"**/*.{ts,tsx}\"",
     "test": "npm run prettier:check && npm run lint && npm run typecheck && npm run jest",
     "storybook": "storybook dev -p 6006",
-    "storybook:build": "storybook build"
+    "storybook:build": "storybook build",
+    "typegen": "npx supabase gen types typescript --project-id mokygmojqgirzucljvac > lib/database.types.ts"
   },
   "dependencies": {
     "@mantine/core": "7.1.0",
