@@ -20,6 +20,7 @@ export interface Database {
           id: number
           littleguy_id: number
           name: string
+          user_id: string
           value: string | null
         }
         Insert: {
@@ -27,6 +28,7 @@ export interface Database {
           id?: number
           littleguy_id: number
           name: string
+          user_id: string
           value?: string | null
         }
         Update: {
@@ -34,6 +36,7 @@ export interface Database {
           id?: number
           littleguy_id?: number
           name?: string
+          user_id?: string
           value?: string | null
         }
         Relationships: [
@@ -41,6 +44,12 @@ export interface Database {
             foreignKeyName: "custom_field_littleguy_id_fkey"
             columns: ["littleguy_id"]
             referencedRelation: "littleguy"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "custom_field_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "profile"
             referencedColumns: ["id"]
           }
         ]
