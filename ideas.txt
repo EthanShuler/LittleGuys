@@ -12,6 +12,7 @@ Attributes:
 - favorite book/movie?
 
 geneaology
+generative ai for creation
 
 ---------------------------
 
