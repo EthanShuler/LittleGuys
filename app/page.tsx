@@ -20,6 +20,7 @@ export default async function HomePage() {
             name={guy.name}
             userId={guy.profile?.id}
             userAvatar={guy.profile?.avatar_url}
+            userName={guy.profile?.full_name}
           />
         )
           : <></>

@@ -2,24 +2,28 @@ import { Text, Avatar, Group, TypographyStylesProvider, Paper } from '@mantine/c
 import classes from './Comment.module.css';
 
 interface Comment {
-  name: string;
-  image: string;
+  name: string | null;
+  image: string | null;
   comment: string;
+  userId: string;
+  createdAt: string;
 }
 
-export function Comment({ name, image, comment }: Comment) {
+export function Comment({ name, image, comment, userId, createdAt }: Comment) {
   return (
     <Paper withBorder radius="md" className={classes.comment}>
       <Group>
         <Avatar
+          component="a"
+          href={`/profile/${userId}`}
           src={image}
-          alt={name}
+          alt={name || 'unkown'}
           radius="xl"
         />
         <div>
           <Text fz="sm">{name}</Text>
           <Text fz="xs" c="dimmed">
-            10 minutes ago
+            {createdAt}
           </Text>
         </div>
       </Group>

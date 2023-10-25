@@ -14,6 +14,43 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      comment: {
+        Row: {
+          contents: string
+          created_at: string
+          id: number
+          littleguy_id: number
+          user_id: string
+        }
+        Insert: {
+          contents: string
+          created_at?: string
+          id?: number
+          littleguy_id: number
+          user_id: string
+        }
+        Update: {
+          contents?: string
+          created_at?: string
+          id?: number
+          littleguy_id?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "comment_littleguy_id_fkey"
+            columns: ["littleguy_id"]
+            referencedRelation: "littleguy"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "comment_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "profile"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       custom_field: {
         Row: {
           created_at: string

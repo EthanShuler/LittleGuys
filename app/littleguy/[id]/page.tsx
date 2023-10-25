@@ -1,38 +1,12 @@
-import { SimpleGrid, Image, Text, Title, Grid, GridCol, Container, Stack, Paper, Input, Avatar } from '@mantine/core';
+import { SimpleGrid, Image, Text, Title, Grid, GridCol, Container, Stack, Paper, Avatar, Box, ScrollArea, Divider } from '@mantine/core';
 import NextImage from 'next/image';
+import { Session } from '@supabase/auth-helpers-nextjs';
 import { createServerSupabaseClient } from '@/supabase';
-import classes from './Guy.module.css';
 import myImage from './myImage.png';
 import { Comment } from '@/components/Comment/Comment';
+import { CommentForm } from '@/components/Comment/CommentForm';
 
 import type { Tables } from '@/lib/database.types';
-
-const comments = [
-  {
-    id: 0,
-    name: 'Bobby J',
-    image: 'https://images.unsplash.com/photo-1624298357597-fd92dfbec01d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=250&q=80',
-    comment: 'lskdjflj ljasldkf jlkjfl ksjdlksjd lskdj lksdlksdlf',
-  },
-  {
-    id: 1,
-    name: 'Bobby J',
-    image: 'https://images.unsplash.com/photo-1624298357597-fd92dfbec01d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=250&q=80',
-    comment: 'lskdjflj ljasldkf jlkjfl ksjdlksjd lskdj lksdlksdlf',
-  },
-  {
-    id: 2,
-    name: 'Bobby J',
-    image: 'https://images.unsplash.com/photo-1624298357597-fd92dfbec01d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=250&q=80',
-    comment: 'lskdjflj ljasldkf jlkjfl ksjdlksjd lskdj lksdlksdlf',
-  },
-  {
-    id: 3,
-    name: 'Bobby J',
-    image: 'https://images.unsplash.com/photo-1624298357597-fd92dfbec01d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=250&q=80',
-    comment: 'lskdjflj ljasldkf jlkjfl ksjdlksjd lskdj lksdlksdlf',
-  },
-];
 
 interface StatisticProps {
   title: string;
@@ -56,7 +30,7 @@ interface DescriptionProps {
 }
 
 const Description = ({ littleGuy, customFields }: DescriptionProps) => (
-  <div className={classes.description}>
+  <Box h="50%">
     <Title order={1} mb={20}>{littleGuy.name}</Title>
     <Statistic key={littleGuy.id} title="Description" description={littleGuy.description} />
     <Statistic key={littleGuy.id} title="Strength" description={littleGuy.description} />
@@ -71,14 +45,10 @@ const Description = ({ littleGuy, customFields }: DescriptionProps) => (
         description={customField.value}
       />
     ))}
-  </div>
+  </Box>
 );
 
-interface ImageContainerProps {
-  profile: Tables<'profile'>;
-}
-
-const ImageContainer = ({ profile }: ImageContainerProps) => (
+const ImageContainer = ({ profile }: { profile: Tables<'profile'> }) => (
   <>
     <Grid align="center" mt="lg">
       <GridCol span={2}>
@@ -106,21 +76,42 @@ const ImageContainer = ({ profile }: ImageContainerProps) => (
   </>
 );
 
-const CommentContainer = () => (
-  <Paper shadow="md" radius="md" withBorder p="sm" mx="lg" mb="xl">
-    <Input placeholder="Comment" />
-    <Container className={classes.comments} mt="sm">
-      <Stack>
-        {comments.map(comment => (
-          <Comment
-            key={comment.id}
-            name={comment.name}
-            image={comment.image}
-            comment={comment.comment}
-          />
-        ))}
-      </Stack>
-    </Container>
+interface Profile {
+  profile: Tables<'profile'> | null
+}
+
+interface CommentContainerProps {
+  comments: (Tables<'comment'> & Profile)[] | null;
+  session: Session | null;
+  littleGuyId: number;
+}
+
+const CommentContainer = ({ comments, session, littleGuyId }: CommentContainerProps) => (
+  <Paper shadow="md" radius="md" withBorder p="sm" mx="lg" mb="xl" h="50%">
+
+    <CommentForm session={session} littleguy_id={littleGuyId} />
+
+      <Container mt="sm">
+      {!comments || comments.length < 1
+      ? <Divider label="No comments" labelPosition="center" />
+      :
+        <ScrollArea h={500}>
+        <Stack>
+          {comments.sort().map(comment => (
+            comment.profile ?
+            <Comment
+              key={comment.id}
+              name={comment.profile.full_name}
+              image={comment.profile.avatar_url}
+              comment={comment.contents}
+              userId={comment.profile?.id}
+              createdAt={comment.created_at}
+            />
+            : <></>
+          ))}
+        </Stack>
+        </ScrollArea> }
+      </Container>
   </Paper>
 );
 
@@ -133,19 +124,21 @@ export default async function Page({ params }: { params: { id: number } }) {
   }
   const guy = data[0];
   const { data: customFields } = await supabase.from('custom_field').select('*').eq('littleguy_id', guy.id);
+  const { data: comments } = await supabase.from('comment').select('*, profile(*)').eq('littleguy_id', guy.id).order('created_at', { ascending: false });
+  const { data: { session } } = await supabase.auth.getSession();
 
   return (
     <>
       <SimpleGrid cols={{ base: 1, md: 2 }} h="100%">
-        <div className={classes.leftColumn}>
-          { data[0].profile ? <ImageContainer profile={data[0].profile} /> : <></> }
-        </div>
-        <div>
+        <Box h="100%" bg="gray">
+          {data[0].profile ? <ImageContainer profile={data[0].profile} /> : <></>}
+        </Box>
+        <Box>
           <Stack justify="space-between" h="100%">
             <Description littleGuy={guy} customFields={customFields} />
-            <CommentContainer />
+            <CommentContainer comments={comments} session={session} littleGuyId={id} />
           </Stack>
-        </div>
+        </Box>
       </SimpleGrid>
     </>
   );

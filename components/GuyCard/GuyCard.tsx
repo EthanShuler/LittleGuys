@@ -1,4 +1,4 @@
-import { Card, Image, Text, AspectRatio, Group, Avatar, Box } from '@mantine/core';
+import { Card, Image, Text, AspectRatio, Group, Avatar, Box, Tooltip } from '@mantine/core';
 import NextImage from 'next/image';
 import classes from './GuyCard.module.css';
 import image from './myImage.png';
@@ -8,9 +8,10 @@ interface GuyCardProps {
   name: string;
   userId: string | null;
   userAvatar: string | null;
+  userName: string | null;
 }
 
-export function GuyCard({ id, name, userId, userAvatar }: GuyCardProps) {
+export function GuyCard({ id, name, userId, userAvatar, userName }: GuyCardProps) {
   const guyUrl = `/littleguy/${id}`;
   const profileUrl = `/profile/${userId}`;
   return (
@@ -32,13 +33,15 @@ export function GuyCard({ id, name, userId, userAvatar }: GuyCardProps) {
       </Box>
       <Group justify="space-between">
         { userAvatar ?
-        <Avatar
-          src={userAvatar}
-          alt="name"
-          radius="xl"
-          component="a"
-          href={profileUrl}
-        />
+        <Tooltip label={userName}>
+          <Avatar
+            src={userAvatar}
+            alt="name"
+            radius="xl"
+            component="a"
+            href={profileUrl}
+          />
+        </Tooltip>
         : <></> }
         <Text className={classes.title} mt={5}>
           {name}
