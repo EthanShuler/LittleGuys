@@ -10,7 +10,7 @@ interface UserGuysProps {
 
 const UserGuys = ({ littleGuys }: UserGuysProps) => (
     <Container pt="xl">
-      <SimpleGrid cols={{ base: 1, sm: 3 }}>
+      <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }}>
         {littleGuys?.map(guy => (
           <GuyCard
             key={guy.id}
@@ -37,7 +37,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   return (
     <Grid>
-      <GridCol span={3} bg="blue">
+      <GridCol span={{ base: 12, sm: 5, lg: 3 }} bg="blue">
         <Container pt="xl">
           <Stack>
             <Avatar
@@ -49,7 +49,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           </Stack>
         </Container>
       </GridCol>
-      <GridCol span={9}>
+      <GridCol span={{ base: 12, sm: 7, lg: 9 }}>
         <UserGuys littleGuys={littleguys} />
       </GridCol>
     </Grid>

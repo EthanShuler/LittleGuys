@@ -1,4 +1,4 @@
-import { SimpleGrid, Image, Text, Title, Grid, GridCol, Container, Stack, Paper, Avatar, Box, ScrollArea, Divider } from '@mantine/core';
+import { SimpleGrid, Image, Text, Title, Container, Stack, Paper, Avatar, Box, ScrollArea, Divider, Group } from '@mantine/core';
 import NextImage from 'next/image';
 import { Session } from '@supabase/auth-helpers-nextjs';
 import { createServerSupabaseClient } from '@/supabase';
@@ -14,14 +14,11 @@ interface StatisticProps {
 }
 
 const Statistic = ({ title, description }: StatisticProps) => (
-  <Grid py="1rem">
-    <GridCol span={2}>
-      <Title order={3}>{title}:</Title>
-    </GridCol>
-    <GridCol span={10}>
-      <Text>{description}</Text>
-    </GridCol>
-  </Grid>
+  //TODO: change to GROUP - give LeftHand a fixed wth so right hand is aligned
+  <Group py="1rem">
+    <Title w={{ base: '40%', sm: '30%', lg: '15%' }} order={3}>{title}:</Title>
+    <Text>{description}</Text>
+  </Group>
 );
 
 interface DescriptionProps {
@@ -30,8 +27,8 @@ interface DescriptionProps {
 }
 
 const Description = ({ littleGuy, customFields }: DescriptionProps) => (
-  <Box h="50%">
-    <Title order={1} mb={20}>{littleGuy.name}</Title>
+  <Stack mih="50%">
+    <Title mx={{ base: 'auto', sm: 0 }} order={1} mb={20}>{littleGuy.name}</Title>
     <Statistic key={littleGuy.id} title="Description" description={littleGuy.description} />
     <Statistic key={littleGuy.id} title="Strength" description={littleGuy.description} />
     <Statistic key={littleGuy.id} title="Weakness" description={littleGuy.description} />
@@ -45,26 +42,22 @@ const Description = ({ littleGuy, customFields }: DescriptionProps) => (
         description={customField.value}
       />
     ))}
-  </Box>
+  </Stack>
 );
 
 const ImageContainer = ({ profile }: { profile: Tables<'profile'> }) => (
-  <>
-    <Grid align="center" mt="lg">
-      <GridCol span={2}>
-        <Avatar
-          ml="xl"
-          src={profile.avatar_url}
-          alt="name"
-          radius="xl"
-          component="a"
-          href={`/profile/${profile.id}`}
-        />
-      </GridCol>
-      <GridCol span={10}>
-        <Title order={2}>{profile.full_name}</Title>
-      </GridCol>
-    </Grid>
+  <Box>
+    <Group mt="lg">
+      <Avatar
+        ml="xl"
+        src={profile.avatar_url}
+        alt="name"
+        radius="xl"
+        component="a"
+        href={`/profile/${profile.id}`}
+      />
+      <Title order={2}>{profile.full_name}</Title>
+    </Group>
     <Image
       mt="lg"
       component={NextImage}
@@ -73,7 +66,7 @@ const ImageContainer = ({ profile }: { profile: Tables<'profile'> }) => (
       alt="abc"
       h="50%"
     />
-  </>
+  </Box>
 );
 
 interface Profile {
@@ -134,7 +127,7 @@ export default async function Page({ params }: { params: { id: number } }) {
           {data[0].profile ? <ImageContainer profile={data[0].profile} /> : <></>}
         </Box>
         <Box>
-          <Stack justify="space-between" h="100%">
+          <Stack justify="space-between" mih="100%">
             <Description littleGuy={guy} customFields={customFields} />
             <CommentContainer comments={comments} session={session} littleGuyId={id} />
           </Stack>

@@ -96,8 +96,9 @@ export default function Header({ session }: { session: Session | null }) {
           <Divider my="sm" />
 
           <Group justify="center" grow pb="xl" px="md">
-            <Button variant="default">Log in</Button>
-            <Button>Sign up</Button>
+          { session
+            ? <Button onClick={handleLogout}>Log out {session.user.email}</Button>
+            : <Button onClick={closeDrawer} variant="default" component={Link} href="/auth">Log in</Button> }
           </Group>
         </ScrollArea>
       </Drawer>

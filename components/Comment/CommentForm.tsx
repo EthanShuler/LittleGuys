@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { Session, createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { TextInput, Group, ActionIcon } from '@mantine/core';
+import { Textarea, Group, ActionIcon } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { IconSend } from '@tabler/icons-react';
 
@@ -40,10 +40,10 @@ export function CommentForm({ session, littleguy_id }: CommentFormProps) {
       form.reset();
  })}>
       <Group justify="center">
-        <TextInput
+        <Textarea
           required
           placeholder="Add a Comment"
-          w="50%"
+          w={{ base: '80%', lg: '50%' }}
           {...form.getInputProps('contents')}
         />
         <ActionIcon color="blue" type="submit">
