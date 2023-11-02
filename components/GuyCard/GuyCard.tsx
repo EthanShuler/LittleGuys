@@ -1,7 +1,6 @@
 import { Card, Image, Text, AspectRatio, Group, Avatar, Box, Tooltip } from '@mantine/core';
 import NextImage from 'next/image';
 import classes from './GuyCard.module.css';
-import image from './myImage.png';
 
 interface GuyCardProps {
   id: number;
@@ -9,9 +8,10 @@ interface GuyCardProps {
   userId: string | null;
   userAvatar: string | null;
   userName: string | null;
+  imageUrl: string | null;
 }
 
-export function GuyCard({ id, name, userId, userAvatar, userName }: GuyCardProps) {
+export function GuyCard({ id, name, userId, userAvatar, userName, imageUrl }: GuyCardProps) {
   const guyUrl = `/littleguy/${id}`;
   const profileUrl = `/profile/${userId}`;
   return (
@@ -25,9 +25,10 @@ export function GuyCard({ id, name, userId, userAvatar, userName }: GuyCardProps
         <AspectRatio ratio={1920 / 1080}>
           <Image
             component={NextImage}
-            src={image}
+            src={imageUrl}
             alt="My image"
-            // fit="contain"
+            width={40}
+            height={40}
           />
         </AspectRatio>
       </Box>

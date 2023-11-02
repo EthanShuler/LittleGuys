@@ -2,7 +2,6 @@ import { SimpleGrid, Image, Text, Title, Container, Stack, Paper, Avatar, Box, S
 import NextImage from 'next/image';
 import { Session } from '@supabase/auth-helpers-nextjs';
 import { createServerSupabaseClient } from '@/supabase';
-import myImage from './myImage.png';
 import { Comment } from '@/components/Comment/Comment';
 import { CommentForm } from '@/components/Comment/CommentForm';
 
@@ -45,7 +44,12 @@ const Description = ({ littleGuy, customFields }: DescriptionProps) => (
   </Stack>
 );
 
-const ImageContainer = ({ profile }: { profile: Tables<'profile'> }) => (
+interface ImageContainerProps {
+  profile: Tables<'profile'>;
+  imageSrc: string | null;
+}
+
+const ImageContainer = ({ profile, imageSrc }: ImageContainerProps) => (
   <Box>
     <Group mt="lg">
       <Avatar
@@ -62,10 +66,10 @@ const ImageContainer = ({ profile }: { profile: Tables<'profile'> }) => (
       mt="lg"
       mx="auto"
       component={NextImage}
-      src={myImage}
+      src={imageSrc}
       alt="abc"
-      h="auto"
-      w="auto"
+      height={100}
+      width={100}
     />
   </Box>
 );
@@ -128,7 +132,9 @@ export default async function Page({ params }: { params: { id: number } }) {
     <>
       <SimpleGrid cols={{ base: 1, md: 2 }} h="100%">
         <Box h="100%" bg="gray">
-          {data[0].profile ? <ImageContainer profile={data[0].profile} /> : <></>}
+          {data[0].profile
+            ? <ImageContainer profile={data[0].profile} imageSrc={guy.image_url} />
+            : <></>}
         </Box>
         <Box>
           <Stack justify="space-between" mih="100%">

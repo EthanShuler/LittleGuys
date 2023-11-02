@@ -40,12 +40,14 @@ export interface Database {
           {
             foreignKeyName: "comment_littleguy_id_fkey"
             columns: ["littleguy_id"]
+            isOneToOne: false
             referencedRelation: "littleguy"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "comment_user_id_fkey"
             columns: ["user_id"]
+            isOneToOne: false
             referencedRelation: "profile"
             referencedColumns: ["id"]
           }
@@ -80,12 +82,14 @@ export interface Database {
           {
             foreignKeyName: "custom_field_littleguy_id_fkey"
             columns: ["littleguy_id"]
+            isOneToOne: false
             referencedRelation: "littleguy"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "custom_field_user_id_fkey"
             columns: ["user_id"]
+            isOneToOne: false
             referencedRelation: "profile"
             referencedColumns: ["id"]
           }
@@ -97,6 +101,7 @@ export interface Database {
           description: string | null
           found: string | null
           id: number
+          image_url: string | null
           name: string
           pose: string | null
           strength: string | null
@@ -108,6 +113,7 @@ export interface Database {
           description?: string | null
           found?: string | null
           id?: number
+          image_url?: string | null
           name?: string
           pose?: string | null
           strength?: string | null
@@ -119,6 +125,7 @@ export interface Database {
           description?: string | null
           found?: string | null
           id?: number
+          image_url?: string | null
           name?: string
           pose?: string | null
           strength?: string | null
@@ -129,6 +136,7 @@ export interface Database {
           {
             foreignKeyName: "littleguy_user_id_fkey"
             columns: ["user_id"]
+            isOneToOne: false
             referencedRelation: "profile"
             referencedColumns: ["id"]
           }
@@ -163,6 +171,7 @@ export interface Database {
           {
             foreignKeyName: "profile_id_fkey"
             columns: ["id"]
+            isOneToOne: true
             referencedRelation: "users"
             referencedColumns: ["id"]
           }

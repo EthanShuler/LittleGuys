@@ -3269,6 +3269,11 @@
   "resolved" "https://registry.npmjs.org/@types/unist/-/unist-2.0.8.tgz"
   "version" "2.0.8"
 
+"@types/uuid@^9.0.6":
+  "integrity" "sha512-BT2Krtx4xaO6iwzwMFUYvWBWkV2pr37zD68Vmp1CDV196MzczBRxuEpD6Pr395HAgebC/co7hOphs53r8V7jew=="
+  "resolved" "https://registry.npmjs.org/@types/uuid/-/uuid-9.0.6.tgz"
+  "version" "9.0.6"
+
 "@types/websocket@^1.0.3":
   "integrity" "sha512-62Omr8U0PO+hgjLCpPnMsmjh2/FRwIGOktZHyYAUzooEJotwkXHMp7vCacdYi8haxBNOiw9bc2HIHI+b/MPNjA=="
   "resolved" "https://registry.npmjs.org/@types/websocket/-/websocket-1.0.7.tgz"
@@ -10995,7 +11000,7 @@
   "resolved" "https://registry.npmjs.org/utils-merge/-/utils-merge-1.0.1.tgz"
   "version" "1.0.1"
 
-"uuid@^9.0.0":
+"uuid@^9.0.0", "uuid@^9.0.1":
   "integrity" "sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA=="
   "resolved" "https://registry.npmjs.org/uuid/-/uuid-9.0.1.tgz"
   "version" "9.0.1"

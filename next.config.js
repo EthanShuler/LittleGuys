@@ -10,4 +10,13 @@ module.exports = withBundleAnalyzer({
   experimental: {
     serverActions: true,
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'mokygmojqgirzucljvac.supabase.co',
+        port: '',
+      },
+    ],
+  },
 });

@@ -19,6 +19,7 @@ const UserGuys = ({ littleGuys }: UserGuysProps) => (
             userId={null}
             userAvatar={null}
             userName={null}
+            imageUrl={guy.image_url}
           />
         ))}
       </SimpleGrid>

@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { useRouter } from 'next/navigation';
 import { Session, createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { TextInput, Button, Paper, Group, Container, ActionIcon, Text, Divider, Textarea, Flex, FileButton } from '@mantine/core';
+import { TextInput, Button, Paper, Group, Container, ActionIcon, Text, Divider, Textarea, Flex, FileInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { randomId } from '@mantine/hooks';
 import { IconTrash } from '@tabler/icons-react';
@@ -15,13 +15,13 @@ interface customField {
 }
 
 export default function CreateForm({ session }: { session: Session | null }) {
-  const [file, setFile] = useState<File | null>(null);
   const router = useRouter();
   const supabase = createClientComponentClient();
   const user = session?.user;
 
   async function createLittleGuy({
     name,
+    file,
     description,
     strength,
     weakness,
@@ -30,6 +30,7 @@ export default function CreateForm({ session }: { session: Session | null }) {
     customFields,
   }: {
     name: string;
+    file: File;
     description: string;
     strength: string;
     weakness: string;
@@ -37,8 +38,22 @@ export default function CreateForm({ session }: { session: Session | null }) {
     found: string;
     customFields: customField[] | null
   }) {
+    const imageUrl = `${user?.id}/${uuidv4()}`;
+    await supabase.storage
+      .from('littleguy-photos')
+      .upload(imageUrl, file);
+    const { data: publicUrl } = supabase.storage.from('littleguy-photos')
+      .getPublicUrl(imageUrl);
+
     const { data, error } = await supabase.from('littleguy').insert({
-      name, description, strength, weakness, pose, found, user_id: user?.id,
+      name,
+      description,
+      strength,
+      weakness,
+      pose,
+      found,
+      user_id: user?.id,
+      image_url: publicUrl.publicUrl,
     }).select();
     if (error) throw new Error(error.message);
 
@@ -61,6 +76,7 @@ export default function CreateForm({ session }: { session: Session | null }) {
   const form = useForm({
     initialValues: {
       name: '',
+      file: null,
       description: '',
       strength: '',
       weakness: '',
@@ -107,14 +123,7 @@ export default function CreateForm({ session }: { session: Session | null }) {
             {...form.getInputProps('name')}
           />
           <Text>Use the choose file button below to upload a photo</Text>
-          <FileButton onChange={setFile} accept="image/png,image/jpg">
-            {(props) => <Button {...props}>Upload image</Button>}
-          </FileButton>
-          {file && (
-            <Text size="sm" ta="center" mt="sm">
-              Picked file: {file.name}
-            </Text>
-          )}
+          <FileInput {...form.getInputProps('file')} accept="image/png,image/jpg" />
           <Textarea label="Description" placeholder="Description" {...form.getInputProps('description')} />
           <Flex gap={{ base: 'xs', sm: 'md' }} w="100%" direction={{ base: 'column', sm: 'row' }}>
             <TextInput label="Strength" placeholder="Strength" {...form.getInputProps('strength')} w={{ base: '100%', sm: '50%' }} />
