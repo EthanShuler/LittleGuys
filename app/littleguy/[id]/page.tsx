@@ -60,11 +60,12 @@ const ImageContainer = ({ profile }: { profile: Tables<'profile'> }) => (
     </Group>
     <Image
       mt="lg"
+      mx="auto"
       component={NextImage}
       src={myImage}
-      fit="contain"
       alt="abc"
-      h="50%"
+      h="auto"
+      w="auto"
     />
   </Box>
 );
@@ -79,34 +80,37 @@ interface CommentContainerProps {
   littleGuyId: number;
 }
 
-const CommentContainer = ({ comments, session, littleGuyId }: CommentContainerProps) => (
-  <Paper shadow="md" radius="md" withBorder p="sm" mx="lg" mb="xl" h="50%">
+const CommentContainer = ({ comments, session, littleGuyId }: CommentContainerProps) => {
+  const noCommentText = session?.user ? 'No comments' : 'You must log in to view comments';
+  return (
+    <Paper shadow="md" radius="md" withBorder p="sm" mx="lg" mb="xl" h="50%">
 
-    <CommentForm session={session} littleguy_id={littleGuyId} />
+      <CommentForm session={session} littleguy_id={littleGuyId} />
 
-      <Container mt="sm">
-      {!comments || comments.length < 1
-      ? <Divider label="No comments" labelPosition="center" />
-      :
-        <ScrollArea h={500}>
-        <Stack>
-          {comments.sort().map(comment => (
-            comment.profile ?
-            <Comment
-              key={comment.id}
-              name={comment.profile.full_name}
-              image={comment.profile.avatar_url}
-              comment={comment.contents}
-              userId={comment.profile?.id}
-              createdAt={comment.created_at}
-            />
-            : <></>
-          ))}
-        </Stack>
-        </ScrollArea> }
-      </Container>
-  </Paper>
-);
+        <Container mt="sm">
+        {!comments || comments.length < 1
+        ? <Divider label={noCommentText} labelPosition="center" />
+        :
+          <ScrollArea h={500}>
+          <Stack>
+            {comments.sort().map(comment => (
+              comment.profile ?
+              <Comment
+                key={comment.id}
+                name={comment.profile.full_name}
+                image={comment.profile.avatar_url}
+                comment={comment.contents}
+                userId={comment.profile?.id}
+                createdAt={comment.created_at}
+              />
+              : <></>
+            ))}
+          </Stack>
+          </ScrollArea> }
+        </Container>
+    </Paper>
+  );
+};
 
 export default async function Page({ params }: { params: { id: number } }) {
   const { id } = params;

@@ -1,8 +1,9 @@
 'use client';
 
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Session, createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { TextInput, Button, Paper, Group, Container, ActionIcon, Text, Divider, Textarea, Flex } from '@mantine/core';
+import { TextInput, Button, Paper, Group, Container, ActionIcon, Text, Divider, Textarea, Flex, FileButton } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { randomId } from '@mantine/hooks';
 import { IconTrash } from '@tabler/icons-react';
@@ -14,6 +15,7 @@ interface customField {
 }
 
 export default function CreateForm({ session }: { session: Session | null }) {
+  const [file, setFile] = useState<File | null>(null);
   const router = useRouter();
   const supabase = createClientComponentClient();
   const user = session?.user;
@@ -104,6 +106,15 @@ export default function CreateForm({ session }: { session: Session | null }) {
             w={{ base: '100%', sm: '50%' }}
             {...form.getInputProps('name')}
           />
+          <Text>Use the choose file button below to upload a photo</Text>
+          <FileButton onChange={setFile} accept="image/png,image/jpg">
+            {(props) => <Button {...props}>Upload image</Button>}
+          </FileButton>
+          {file && (
+            <Text size="sm" ta="center" mt="sm">
+              Picked file: {file.name}
+            </Text>
+          )}
           <Textarea label="Description" placeholder="Description" {...form.getInputProps('description')} />
           <Flex gap={{ base: 'xs', sm: 'md' }} w="100%" direction={{ base: 'column', sm: 'row' }}>
             <TextInput label="Strength" placeholder="Strength" {...form.getInputProps('strength')} w={{ base: '100%', sm: '50%' }} />
