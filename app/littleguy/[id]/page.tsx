@@ -1,4 +1,4 @@
-import { SimpleGrid, Image, Text, Title, Container, Stack, Paper, Avatar, Box, ScrollArea, Divider, Group } from '@mantine/core';
+import { SimpleGrid, Image, Text, Title, Container, Stack, Paper, Avatar, Box, ScrollArea, Divider, Group, AspectRatio } from '@mantine/core';
 import NextImage from 'next/image';
 import { Session } from '@supabase/auth-helpers-nextjs';
 import { createServerSupabaseClient } from '@/supabase';
@@ -28,11 +28,11 @@ interface DescriptionProps {
 const Description = ({ littleGuy, customFields }: DescriptionProps) => (
   <Stack mih="50%">
     <Title mx={{ base: 'auto', sm: 0 }} order={1} mb={20}>{littleGuy.name}</Title>
-    <Statistic key={littleGuy.id} title="Description" description={littleGuy.description} />
-    <Statistic key={littleGuy.id} title="Strength" description={littleGuy.description} />
-    <Statistic key={littleGuy.id} title="Weakness" description={littleGuy.description} />
-    <Statistic key={littleGuy.id} title="Pose" description={littleGuy.description} />
-    <Statistic key={littleGuy.id} title="Found" description={littleGuy.description} />
+    { littleGuy.description && <Statistic title="Description" description={littleGuy.description} /> }
+    { littleGuy.strength && <Statistic title="Strength" description={littleGuy.strength} /> }
+    { littleGuy.weakness && <Statistic title="Weakness" description={littleGuy.weakness} /> }
+    { littleGuy.pose && <Statistic title="Pose" description={littleGuy.pose} /> }
+    { littleGuy.found && <Statistic title="Found" description={littleGuy.found} /> }
 
     {customFields?.map(customField => (
       <Statistic
@@ -62,15 +62,16 @@ const ImageContainer = ({ profile, imageSrc }: ImageContainerProps) => (
       />
       <Title order={2}>{profile.full_name}</Title>
     </Group>
-    <Image
-      mt="lg"
-      mx="auto"
-      component={NextImage}
-      src={imageSrc}
-      alt="abc"
-      height={100}
-      width={100}
-    />
+    <AspectRatio ratio={1}>
+      <Image
+        mt="lg"
+        mx="auto"
+        component={NextImage}
+        src={imageSrc}
+        alt="abc"
+        fill
+      />
+    </AspectRatio>
   </Box>
 );
 
@@ -131,7 +132,7 @@ export default async function Page({ params }: { params: { id: number } }) {
   return (
     <>
       <SimpleGrid cols={{ base: 1, md: 2 }} h="100%">
-        <Box h="100%" bg="gray">
+        <Box h="100%">
           {data[0].profile
             ? <ImageContainer profile={data[0].profile} imageSrc={guy.image_url} />
             : <></>}

@@ -27,12 +27,11 @@ export function GuyCard({ id, name, userId, userAvatar, userName, imageUrl }: Gu
             component={NextImage}
             src={imageUrl}
             alt="My image"
-            width={40}
-            height={40}
+            fill
           />
         </AspectRatio>
       </Box>
-      <Group justify="space-between">
+      <Group justify="space-between" mt="xs">
         { userAvatar ?
         <Tooltip label={userName}>
           <Avatar

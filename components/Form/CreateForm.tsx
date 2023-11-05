@@ -30,7 +30,7 @@ export default function CreateForm({ session }: { session: Session | null }) {
     customFields,
   }: {
     name: string;
-    file: File;
+    file: File | null;
     description: string;
     strength: string;
     weakness: string;
@@ -38,6 +38,7 @@ export default function CreateForm({ session }: { session: Session | null }) {
     found: string;
     customFields: customField[] | null
   }) {
+    if (!file) return;
     const imageUrl = `${user?.id}/${uuidv4()}`;
     await supabase.storage
       .from('littleguy-photos')
@@ -122,8 +123,12 @@ export default function CreateForm({ session }: { session: Session | null }) {
             w={{ base: '100%', sm: '50%' }}
             {...form.getInputProps('name')}
           />
-          <Text>Use the choose file button below to upload a photo</Text>
-          <FileInput {...form.getInputProps('file')} accept="image/png,image/jpg" />
+          <FileInput
+            required
+            accept="image/png,image/jpg"
+            label="Upload your Image"
+            {...form.getInputProps('file')}
+          />
           <Textarea label="Description" placeholder="Description" {...form.getInputProps('description')} />
           <Flex gap={{ base: 'xs', sm: 'md' }} w="100%" direction={{ base: 'column', sm: 'row' }}>
             <TextInput label="Strength" placeholder="Strength" {...form.getInputProps('strength')} w={{ base: '100%', sm: '50%' }} />

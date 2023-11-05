@@ -1,4 +1,4 @@
-import { Container, SimpleGrid, Grid, GridCol, Avatar, Stack, Title } from '@mantine/core';
+import { Container, SimpleGrid, Grid, GridCol, Avatar, Group, Title } from '@mantine/core';
 import { GuyCard } from '@/components/GuyCard/GuyCard';
 import { createServerSupabaseClient } from '@/supabase';
 
@@ -10,6 +10,7 @@ interface UserGuysProps {
 
 const UserGuys = ({ littleGuys }: UserGuysProps) => (
     <Container pt="xl">
+      <Title m="sm">Guys</Title>
       <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }}>
         {littleGuys?.map(guy => (
           <GuyCard
@@ -38,16 +39,17 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   return (
     <Grid>
-      <GridCol span={{ base: 12, sm: 5, lg: 3 }} bg="blue">
+      <GridCol span={{ base: 12, sm: 5, lg: 3 }}>
         <Container pt="xl">
-          <Stack>
+          <Group>
             <Avatar
               src={account.avatar_url}
               alt="avatar"
               radius="xl"
+              size="xl"
             />
             <Title>{account.full_name}</Title>
-          </Stack>
+          </Group>
         </Container>
       </GridCol>
       <GridCol span={{ base: 12, sm: 7, lg: 9 }}>
