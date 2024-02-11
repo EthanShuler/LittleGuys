@@ -1,9 +1,10 @@
-import { SimpleGrid, Image, Text, Title, Container, Stack, Paper, Avatar, Box, ScrollArea, Divider, Group, AspectRatio, Button } from '@mantine/core';
+import { SimpleGrid, Image, Text, Title, Container, Stack, Paper, Avatar, Box, ScrollArea, Divider, Group, AspectRatio } from '@mantine/core';
 import NextImage from 'next/image';
 import { Session } from '@supabase/auth-helpers-nextjs';
 import { createServerSupabaseClient } from '@/supabase';
 import { Comment } from '@/components/Comment/Comment';
 import { CommentForm } from '@/components/Comment/CommentForm';
+import EditForm from '@/components/Form/EditForm';
 
 import type { Tables } from '@/lib/database.types';
 
@@ -139,7 +140,9 @@ export default async function Page({ params }: { params: { id: number } }) {
         <Box>
           <Stack justify="space-between" mih="100%">
             <Title mx="auto" order={1} mb={20}>{guy.name}</Title>
-            { session?.user.id === guy.user_id && <Button mx="xl">Edit {guy.name}</Button> }
+            { session?.user.id === guy.user_id &&
+              <EditForm littleGuy={guy} session={session} guyCustomFields={customFields} />
+            }
             <Description littleGuy={guy} customFields={customFields} />
             <CommentContainer comments={comments} session={session} littleGuyId={id} />
           </Stack>
