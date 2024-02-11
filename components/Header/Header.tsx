@@ -64,7 +64,7 @@ export default function Header({ session }: { session: Session | null }) {
 
           <Group visibleFrom="sm">
             { session
-            ? <Button onClick={handleLogout}>Log out {session.user.email}</Button>
+            ? <Button onClick={handleLogout}>Log out</Button>
             : <Button variant="default" component={Link} href="/auth">Log in</Button> }
           </Group>
 
@@ -97,7 +97,7 @@ export default function Header({ session }: { session: Session | null }) {
 
           <Group justify="center" grow pb="xl" px="md">
           { session
-            ? <Button onClick={handleLogout}>Log out {session.user.email}</Button>
+            ? <Button onClick={handleLogout}>Log out</Button>
             : <Button onClick={closeDrawer} variant="default" component={Link} href="/auth">Log in</Button> }
           </Group>
         </ScrollArea>

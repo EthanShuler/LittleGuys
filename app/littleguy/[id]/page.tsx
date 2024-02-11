@@ -1,4 +1,4 @@
-import { SimpleGrid, Image, Text, Title, Container, Stack, Paper, Avatar, Box, ScrollArea, Divider, Group, AspectRatio } from '@mantine/core';
+import { SimpleGrid, Image, Text, Title, Container, Stack, Paper, Avatar, Box, ScrollArea, Divider, Group, AspectRatio, Button } from '@mantine/core';
 import NextImage from 'next/image';
 import { Session } from '@supabase/auth-helpers-nextjs';
 import { createServerSupabaseClient } from '@/supabase';
@@ -15,7 +15,7 @@ interface StatisticProps {
 const Statistic = ({ title, description }: StatisticProps) => (
   //TODO: change to GROUP - give LeftHand a fixed wth so right hand is aligned
   <Group py="1rem">
-    <Title w={{ base: '40%', sm: '30%', lg: '15%' }} order={3}>{title}:</Title>
+    <Title w={{ base: '40%' }} order={3}>{title}:</Title>
     <Text>{description}</Text>
   </Group>
 );
@@ -26,8 +26,7 @@ interface DescriptionProps {
 }
 
 const Description = ({ littleGuy, customFields }: DescriptionProps) => (
-  <Stack mih="50%">
-    <Title mx={{ base: 'auto', sm: 0 }} order={1} mb={20}>{littleGuy.name}</Title>
+  <Stack mih="50%" mx="xs">
     { littleGuy.description && <Statistic title="Description" description={littleGuy.description} /> }
     { littleGuy.strength && <Statistic title="Strength" description={littleGuy.strength} /> }
     { littleGuy.weakness && <Statistic title="Weakness" description={littleGuy.weakness} /> }
@@ -139,6 +138,8 @@ export default async function Page({ params }: { params: { id: number } }) {
         </Box>
         <Box>
           <Stack justify="space-between" mih="100%">
+            <Title mx="auto" order={1} mb={20}>{guy.name}</Title>
+            { session?.user.id === guy.user_id && <Button mx="xl">Edit {guy.name}</Button> }
             <Description littleGuy={guy} customFields={customFields} />
             <CommentContainer comments={comments} session={session} littleGuyId={id} />
           </Stack>
