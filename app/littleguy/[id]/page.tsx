@@ -138,7 +138,7 @@ export default async function Page({ params }: { params: { id: number } }) {
             : <></>}
         </Box>
         <Box>
-          <Stack justify="space-between" mih="100%">
+          <Stack mih="100%">
             <Title mx="auto" order={1} mb={20}>{guy.name}</Title>
             { session?.user.id === guy.user_id &&
               <EditForm littleGuy={guy} session={session} guyCustomFields={customFields} />

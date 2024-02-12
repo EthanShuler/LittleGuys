@@ -77,7 +77,7 @@ export default function Header({ session }: { session: Session | null }) {
         onClose={closeDrawer}
         size="100%"
         padding="md"
-        title="Navigation"
+        title="Little Guys"
         hiddenFrom="sm"
         zIndex={1000000}
       >

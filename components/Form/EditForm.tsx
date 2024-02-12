@@ -1,10 +1,11 @@
 'use client';
 
+import { v4 as uuidv4 } from 'uuid';
 import { Session, createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useForm } from '@mantine/form';
 import { useRouter } from 'next/navigation';
 import { useDisclosure, randomId } from '@mantine/hooks';
-import { Modal, Button, TextInput, Textarea, Flex, ActionIcon, Group, Text, Divider } from '@mantine/core';
+import { Modal, Button, TextInput, Textarea, Flex, ActionIcon, Group, Text, Divider, FileInput } from '@mantine/core';
 import { IconTrash } from '@tabler/icons-react';
 
 import type { Tables } from '@/lib/database.types';
@@ -23,6 +24,7 @@ export default function EditForm({ session, littleGuy, guyCustomFields }: EditFo
 
   async function updateLittleGuy({
     name,
+    file,
     description,
     strength,
     weakness,
@@ -31,6 +33,7 @@ export default function EditForm({ session, littleGuy, guyCustomFields }: EditFo
     customFields,
   }: {
     name: string;
+    file: File | null;
     description: string;
     strength: string;
     weakness: string;
@@ -38,6 +41,17 @@ export default function EditForm({ session, littleGuy, guyCustomFields }: EditFo
     found: string;
     customFields: Tables<'custom_field'>[] | null;
   }) {
+    let imgUrl = '';
+    if (file) {
+      const imageUrl = `${user?.id}/${uuidv4()}`;
+      await supabase.storage
+        .from('littleguy-photos')
+        .upload(imageUrl, file);
+      const { data: publicUrl } = supabase.storage.from('littleguy-photos')
+        .getPublicUrl(imageUrl);
+      imgUrl = publicUrl.publicUrl;
+    }
+
     const { error } = await supabase.from('littleguy').update({
       name,
       description,
@@ -46,7 +60,7 @@ export default function EditForm({ session, littleGuy, guyCustomFields }: EditFo
       pose,
       found,
       user_id: user?.id,
-      image_url: littleGuy.image_url,
+      image_url: imgUrl ?? littleGuy.image_url,
     }).eq('id', littleGuy.id);
     if (error) throw new Error(error.message);
 
@@ -72,6 +86,7 @@ export default function EditForm({ session, littleGuy, guyCustomFields }: EditFo
   const form = useForm({
     initialValues: {
       name: littleGuy.name ?? '',
+      file: null,
       description: littleGuy.description ?? '',
       strength: littleGuy.strength ?? '',
       weakness: littleGuy.weakness ?? '',
@@ -116,6 +131,11 @@ export default function EditForm({ session, littleGuy, guyCustomFields }: EditFo
             placeholder="Name"
             {...form.getInputProps('name')}
           />
+          <FileInput
+            accept="image/png,image/jpg"
+            label="Upload your Image"
+            {...form.getInputProps('file')}
+          />
           <Textarea label="Description" placeholder="Description" {...form.getInputProps('description')} />
           <Flex gap={{ base: 'xs', sm: 'md' }} w="100%" direction={{ base: 'column', sm: 'row' }}>
             <TextInput label="Strength" placeholder="Strength" {...form.getInputProps('strength')} w={{ base: '100%', sm: '50%' }} />
@@ -154,7 +174,7 @@ export default function EditForm({ session, littleGuy, guyCustomFields }: EditFo
         </form>
       </Modal>
 
-      <Button onClick={open}>Edit {littleGuy.name}</Button>
+      <Button onClick={open} style={{ alignSelf: 'center' }}>Edit {littleGuy.name}</Button>
     </>
   );
 }
