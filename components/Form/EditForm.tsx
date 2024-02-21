@@ -42,7 +42,7 @@ export default function EditForm({ session, littleGuy, guyCustomFields }: EditFo
     customFields: Tables<'custom_field'>[] | null;
   }) {
     let imgUrl = '';
-    if (file) {
+    if (file !== null) {
       const imageUrl = `${user?.id}/${uuidv4()}`;
       await supabase.storage
         .from('littleguy-photos')
@@ -51,7 +51,9 @@ export default function EditForm({ session, littleGuy, guyCustomFields }: EditFo
         .getPublicUrl(imageUrl);
       imgUrl = publicUrl.publicUrl;
     }
-
+    if (imgUrl === '' && littleGuy.image_url) {
+      imgUrl = littleGuy.image_url;
+    }
     const { error } = await supabase.from('littleguy').update({
       name,
       description,
@@ -60,7 +62,7 @@ export default function EditForm({ session, littleGuy, guyCustomFields }: EditFo
       pose,
       found,
       user_id: user?.id,
-      image_url: imgUrl ?? littleGuy.image_url,
+      image_url: imgUrl,
     }).eq('id', littleGuy.id);
     if (error) throw new Error(error.message);
 

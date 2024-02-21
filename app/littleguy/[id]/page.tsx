@@ -15,7 +15,7 @@ interface StatisticProps {
 
 const Statistic = ({ title, description }: StatisticProps) => (
   //TODO: change to GROUP - give LeftHand a fixed wth so right hand is aligned
-  <Group py="1rem">
+  <Group py="1rem" c="white">
     <Title w={{ base: '40%' }} order={3}>{title}:</Title>
     <Text>{description}</Text>
   </Group>
@@ -50,7 +50,7 @@ interface ImageContainerProps {
 }
 
 const ImageContainer = ({ profile, imageSrc }: ImageContainerProps) => (
-  <Box>
+  <Box c="white">
     <Group mt="lg">
       <Avatar
         ml="xl"
@@ -139,7 +139,7 @@ export default async function Page({ params }: { params: { id: number } }) {
         </Box>
         <Box>
           <Stack mih="100%">
-            <Title mx="auto" order={1} mb={20}>{guy.name}</Title>
+            <Title mx="auto" order={1} mb={20} c="white">{guy.name}</Title>
             { session?.user.id === guy.user_id &&
               <EditForm littleGuy={guy} session={session} guyCustomFields={customFields} />
             }

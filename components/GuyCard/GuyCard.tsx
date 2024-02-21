@@ -20,6 +20,7 @@ export function GuyCard({ id, name, userId, userAvatar, userName, imageUrl }: Gu
       radius="md"
       withBorder
       className={classes.card}
+      bg="blue-gray.0"
     >
       <Box component="a" href={guyUrl}>
         <AspectRatio ratio={1920 / 1080}>
@@ -31,7 +32,7 @@ export function GuyCard({ id, name, userId, userAvatar, userName, imageUrl }: Gu
           />
         </AspectRatio>
       </Box>
-      <Group justify="space-between" mt="xs">
+      <Group justify="space-between" mt="xs" c="black">
         { userAvatar ?
         <Tooltip label={userName}>
           <Avatar

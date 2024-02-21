@@ -23,13 +23,14 @@ export default async function RootLayout({ children }: { children: any }) {
           content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no"
         />
       </head>
-      <body>
+      <body style={{ backgroundColor: 'var(--mantine-color-blue-gray-7)' }}>
         <MantineProvider theme={theme}>
           <AppShell
             header={{ height: 60 }}
             h="100%"
+            withBorder={false}
           >
-            <AppShellHeader>
+            <AppShellHeader bg="blue-gray.9">
               <Header session={session} />
             </AppShellHeader>
             <AppShellMain h="100%">
