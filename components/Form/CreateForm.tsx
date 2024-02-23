@@ -3,7 +3,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { useRouter } from 'next/navigation';
 import { Session, createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { TextInput, Button, Paper, Group, Container, ActionIcon, Text, Divider, Textarea, Flex, FileInput } from '@mantine/core';
+import { TextInput, Button, Paper, Group, Container, ActionIcon, Text, Divider, Textarea, Flex, FileInput, Center } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { randomId } from '@mantine/hooks';
 import { IconTrash } from '@tabler/icons-react';
@@ -112,61 +112,63 @@ export default function CreateForm({ session }: { session: Session | null }) {
   ));
 
   return (
-    <Paper shadow="sm" p="lg" m="xl">
-      <Container>
-        <form onSubmit={form.onSubmit(createLittleGuy)}>
-          <TextInput
-            withAsterisk
-            label="Name"
-            placeholder="Name"
-            required
-            w={{ base: '100%', sm: '50%' }}
-            {...form.getInputProps('name')}
-          />
-          <FileInput
-            required
-            accept="image/png,image/jpg"
-            label="Upload your Image"
-            {...form.getInputProps('file')}
-          />
-          <Textarea label="Description" placeholder="Description" {...form.getInputProps('description')} />
-          <Flex gap={{ base: 'xs', sm: 'md' }} w="100%" direction={{ base: 'column', sm: 'row' }}>
-            <TextInput label="Strength" placeholder="Strength" {...form.getInputProps('strength')} w={{ base: '100%', sm: '50%' }} />
-            <TextInput label="Weakness" placeholder="Weakness" {...form.getInputProps('weakness')} w={{ base: '100%', sm: '50%' }} />
-          </Flex>
-          <Flex gap={{ base: 'xs', sm: 'md' }} w="100%" direction={{ base: 'column', sm: 'row' }}>
-            <TextInput label="Pose" placeholder="Pose" {...form.getInputProps('pose')} w={{ base: '100%', sm: '50%' }} />
-            <TextInput label="Found" placeholder="Found" {...form.getInputProps('found')} w={{ base: '100%', sm: '50%' }} />
-          </Flex>
+    <Center>
+      <Paper shadow="sm" p="lg" m="xl">
+        <Container>
+          <form onSubmit={form.onSubmit(createLittleGuy)}>
+            <TextInput
+              withAsterisk
+              label="Name"
+              placeholder="Name"
+              required
+              w={{ base: '100%', sm: '50%' }}
+              {...form.getInputProps('name')}
+            />
+            <FileInput
+              required
+              accept="image/png,image/jpg"
+              label="Upload your Image"
+              {...form.getInputProps('file')}
+            />
+            <Textarea label="Description" placeholder="Description" {...form.getInputProps('description')} />
+            <Flex gap={{ base: 'xs', sm: 'md' }} w="100%" direction={{ base: 'column', sm: 'row' }}>
+              <TextInput label="Strength" placeholder="Strength" {...form.getInputProps('strength')} w={{ base: '100%', sm: '50%' }} />
+              <TextInput label="Weakness" placeholder="Weakness" {...form.getInputProps('weakness')} w={{ base: '100%', sm: '50%' }} />
+            </Flex>
+            <Flex gap={{ base: 'xs', sm: 'md' }} w="100%" direction={{ base: 'column', sm: 'row' }}>
+              <TextInput label="Pose" placeholder="Pose" {...form.getInputProps('pose')} w={{ base: '100%', sm: '50%' }} />
+              <TextInput label="Found" placeholder="Found" {...form.getInputProps('found')} w={{ base: '100%', sm: '50%' }} />
+            </Flex>
 
-          <Divider my="lg" label="Custom Fields" labelPosition="center" />
+            <Divider my="lg" label="Custom Fields" labelPosition="center" />
 
-          {customFields.length > 0 ? (
-            <Group mb="xs" visibleFrom="sm">
-              <Text fw="500" size="sm" style={{ flex: 1 }}>
-                Name
-              </Text>
-              <Text fw="500" size="sm" style={{ flex: 2 }}>
-                Value
-              </Text>
+            {customFields.length > 0 ? (
+              <Group mb="xs" visibleFrom="sm">
+                <Text fw="500" size="sm" style={{ flex: 1 }}>
+                  Name
+                </Text>
+                <Text fw="500" size="sm" style={{ flex: 2 }}>
+                  Value
+                </Text>
+              </Group>
+            ) : (
+              <Text c="dimmed" ta="center">No custom fields...</Text>
+            )}
+
+            {customFields}
+
+            <Group justify="center" mt="md">
+              <Button onClick={() => form.insertListItem('customFields', { name: '', value: '', key: randomId() })}>
+                Add Custom Field
+              </Button>
             </Group>
-          ) : (
-            <Text c="dimmed" ta="center">No custom fields...</Text>
-          )}
 
-          {customFields}
-
-          <Group justify="center" mt="md">
-            <Button onClick={() => form.insertListItem('customFields', { name: '', value: '', key: randomId() })}>
-              Add Custom Field
-            </Button>
-          </Group>
-
-          <Group justify="flex-end" mt="md">
-            <Button type="submit">Submit</Button>
-          </Group>
-        </form>
-      </Container>
-    </Paper>
+            <Group justify="flex-end" mt="md">
+              <Button type="submit">Submit</Button>
+            </Group>
+          </form>
+        </Container>
+      </Paper>
+    </Center>
   );
 }

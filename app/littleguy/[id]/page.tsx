@@ -88,7 +88,7 @@ interface CommentContainerProps {
 const CommentContainer = ({ comments, session, littleGuyId }: CommentContainerProps) => {
   const noCommentText = session?.user ? 'No comments' : 'You must log in to view comments';
   return (
-    <Paper shadow="md" radius="md" withBorder p="sm" mx="lg" mb="xl" h="50%">
+    <Paper shadow="md" radius="md" p="sm" mx="lg" mb="xl" h="50%" bg="blue-gray.4">
 
       <CommentForm session={session} littleguy_id={littleGuyId} />
 

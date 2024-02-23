@@ -124,7 +124,7 @@ export default function EditForm({ session, littleGuy, guyCustomFields }: EditFo
 
   return (
     <>
-      <Modal opened={opened} onClose={close} title="Edit">
+      <Modal opened={opened} onClose={close} title={`Edit ${littleGuy.name}`}>
         <form onSubmit={form.onSubmit(updateLittleGuy)}>
           <TextInput
             withAsterisk

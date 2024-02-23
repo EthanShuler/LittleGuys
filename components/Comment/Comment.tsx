@@ -19,7 +19,7 @@ export function Comment({ name, image, comment, userId, createdAt }: Comment) {
   };
 
   return (
-    <Paper withBorder radius="md" className={classes.comment}>
+    <Paper withBorder radius="md" className={classes.comment} bg="blue-gray.0">
       <Group>
         <Avatar
           component="a"
